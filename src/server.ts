@@ -7,16 +7,9 @@ app.use(express.json())
 //Route Params: Identificar qual recurso eu quero atualizar ou deleter
 //Query Params: listagem paginacao, filtro,ordrnacao etc..
 
-app.post('/users', (request, response) => {
+app.get('/', (request, response) => {
 
-    console.log(request.query);
-
-    const users = [
-        {name: 'Pierre', age: 38 },
-        {name: 'Marcia', age: 33 },
-    ];
-
-    return response.json(users);
+    return response.json({message:'Hello'});
 });
 
 app.listen(3333);
