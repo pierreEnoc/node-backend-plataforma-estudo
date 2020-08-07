@@ -24,7 +24,9 @@ routes.post('/classes', async (request, response) => {
         schedule
     } = request.body;
 
-    const insertedUsersId = await db('users').insert({
+    const trx = await db.transaction();
+
+    const insertedUsersId = await trx('users').insert({
         name,
         avatar,
         watsapp,
@@ -34,7 +36,7 @@ routes.post('/classes', async (request, response) => {
     // para pegar o id
     const user_id = insertedUsersId[0];
 
-    const insertedClassesId = await db('classes').insert({
+    const insertedClassesId = await trx('classes').insert({
         subject,
         cost,
         user_id,
@@ -52,7 +54,9 @@ routes.post('/classes', async (request, response) => {
         };
     })
 
-    await db('class_schedule').insert(classSchedule);
+    await trx('class_schedule').insert(classSchedule);
+
+    await trx.commit();
 
    return response.send();
 
