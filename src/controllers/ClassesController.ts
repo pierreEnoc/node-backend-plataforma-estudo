@@ -14,6 +14,9 @@ export default class ClassesController {
 
     async index(request: Request, response: Response) {
         const filters = request.query;
+        const week_day = filters.subject as string;
+        const subject = filters.subject as string;
+        const time = filters.subject as string;
 
         if (!filters.week_day || !filters.subject || !filters.time) {
             return response.status(400).json({
@@ -21,11 +24,14 @@ export default class ClassesController {
             })
         }
 
-        const timeInMinutes = convertHourToMinutes(filters.time as string)
+        const timeInMinutes = convertHourToMinutes(time);
 
-        console.log(timeInMinutes);
-        
-        return response.send();
+        const classes = await db('classes')
+        .where('classes.subject', '=', subject)
+        .join('users', 'classes.user_id', '=', 'users.id')
+        .select(['classes.*', 'users.*']);
+
+        return response.json(classes);
     }
 
 
