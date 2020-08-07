@@ -27,7 +27,7 @@ export default class ClassesController {
         const timeInMinutes = convertHourToMinutes(time);
 
         const classes = await db('classes')
-        // verification hour
+        // verification hour with filters
         .whereExists(function() {
             this.select('class_schedule.*')
             .from('class_schedule')
@@ -97,7 +97,7 @@ export default class ClassesController {
     
     }catch(err){
     
-        console.log(err);
+       
         
         await trx.rollback();
     
